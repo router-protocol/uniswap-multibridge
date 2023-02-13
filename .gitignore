@@ -2,7 +2,7 @@ artifacts/
 bin/
 build/
 cache/
-deployments/hardhat/
+deployments/
 genfiles/
 failing_metadata/
 node_modules/

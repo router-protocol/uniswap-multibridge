@@ -14,6 +14,8 @@ contract MockCaller is AccessControl {
     error AdminBadRole();
     error CallerBadRole();
 
+    receive() external payable {}
+
     modifier onlyAdmin() {
         if (!hasRole(DEFAULT_ADMIN_ROLE, msg.sender)) revert AdminBadRole();
         _;
@@ -41,7 +43,7 @@ contract MockCaller is AccessControl {
     }
 
     function addSenderAdapters(address[] calldata _senderAdapters) external onlyAdmin {
-       bridgeSender.addSenderAdapters(_senderAdapters);
+        bridgeSender.addSenderAdapters(_senderAdapters);
     }
 
     function removeSenderAdapters(address[] calldata _senderAdapters) external onlyAdmin {
