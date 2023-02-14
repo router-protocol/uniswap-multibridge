@@ -1,6 +1,10 @@
 import * as dotenv from 'dotenv';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { address as routerReceiverGoerli } from '../../../deployments/goerli/RouterReceiverAdapter.json';
+import { address as routerReceierMumbai } from '../../../deployments/polygonTest/RouterReceiverAdapter.json';
+import { address as routerSenderGoerli } from '../../../deployments/goerli/RouterSenderAdapter.json';
+import { address as routerSenderMumbai } from '../../../deployments/polygonTest/RouterSenderAdapter.json';
 
 dotenv.config();
 
@@ -51,23 +55,23 @@ const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   ); //uint64 _quorumThreshold
   await waitTx(tx);
 
-  const chainIds = [5, 80001].filter((c) => c != hre.network.config.chainId);
-  const receiverAdapters = Array(chainIds.length).fill(routerReceiverAdapterInstance.address);
+  const chainIds = [5, 80001];
+  const receiverAdapters = [routerReceiverGoerli, routerReceierMumbai];
 
   //updateReceiverAdapter(uint64[] calldata _dstChainIds, address[] calldata _receiverAdapters)
-  // console.log('updateReceiverAdapter', chainIds, receiverAdapters);
-  // tx = await routerSenderAdapterInstance.updateReceiverAdapter(chainIds, receiverAdapters);
-  // await waitTx(tx);
+  console.log('updateReceiverAdapter', chainIds, receiverAdapters);
+  tx = await routerSenderAdapterInstance.updateReceiverAdapter(chainIds, receiverAdapters);
+  await waitTx(tx);
   //setMultiBridgeSender(address _multiBridgeSender)
   console.log('setMultiBridgeSender', multiBridgeSenderInstance.address);
   tx = await routerSenderAdapterInstance.setMultiBridgeSender(multiBridgeSenderInstance.address);
   await waitTx(tx);
 
-  const senderAdapters = Array(chainIds.length).fill(routerSenderAdapterInstance.address);
+  const senderAdapters = [routerSenderGoerli, routerSenderMumbai];
   //updateSenderAdapter(uint256[] calldata _srcChainIds, address[] calldata _senderAdapters)
-  // console.log('updateSenderAdapter', chainIds, senderAdapters);
-  // tx = await routerReceiverAdapterInstance.updateSenderAdapter(chainIds, senderAdapters);
-  // await waitTx(tx);
+  console.log('updateSenderAdapter', chainIds, senderAdapters);
+  tx = await routerReceiverAdapterInstance.updateSenderAdapter(chainIds, senderAdapters);
+  await waitTx(tx);
   //setMultiBridgeReceiver(address _multiBridgeReceiver)
   console.log('setMultiBridgeReceiver', multiBridgeReceiverInstance.address);
   tx = await routerReceiverAdapterInstance.setMultiBridgeReceiver(multiBridgeReceiverInstance.address);
