@@ -10,8 +10,8 @@ const deployFunc: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployer } = await getNamedAccounts();
 
   const routerGateway: { [key: number]: string } = {
-    5: '0xC394fEbBdfbEE807c9DA149272f073a6153Aa002',
-    80001: '0x1be1D72a6160aC05F5Bb9760830a444DA4aA9c45'
+    5: '0x12C9A8B2e3Db12ddC411a64D6a75f47E6642f026',
+    80001: '0xB139915AE11f6f0ACd05C8dB85E8ED1bE1c7c17d'
   };
 
   const chainId = Number(await hre.getChainId());
